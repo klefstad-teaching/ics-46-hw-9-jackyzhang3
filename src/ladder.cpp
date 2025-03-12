@@ -81,28 +81,29 @@ void print_word_ladder(const vector<string>& ladder) {
     }
     cout << "Word ladder found: ";
     for (size_t i = 0; i < ladder.size(); ++i) {
-        cout << ladder[i];
+        cout << ladder[i] << " ";
     }
     cout << endl;
 }
 
-void verify_word_ladder(const vector<string>& ladder, const set<string>& word_list) {
-    if (ladder.empty()) {
-        cout << "Error: The ladder is empty!" << endl;
-        return;
-    }
+#define my_assert(e) {cout << #e << ((e) ? " passed": " failed") << endl;}
 
-    for (size_t i = 1; i < ladder.size(); ++i) {
-        if (!is_adjacent(ladder[i - 1], ladder[i])) {
-            cout << "Invalid ladder! Words '" << ladder[i - 1] << "' and '" << ladder[i] << "' are not adjacent." << endl;
-            return;
-        }
+void verify_word_ladder() {
 
-        if (i > 0 && word_list.find(ladder[i]) == word_list.end()) {
-            cout << "Invalid ladder! Word '" << ladder[i] << "' is not in the dictionary." << endl;
-            return;
-        }
-    }
+    set<string> word_list;
 
-    cout << "The word ladder is valid!" << endl;
+    load_words(word_list, "src/words.txt");
+
+    my_assert(generate_word_ladder("cat", "dog", word_list).size() == 4);
+
+    my_assert(generate_word_ladder("marty", "curls", word_list).size() == 6);
+
+    my_assert(generate_word_ladder("code", "data", word_list).size() == 6);
+
+    my_assert(generate_word_ladder("work", "play", word_list).size() == 6);
+
+    my_assert(generate_word_ladder("sleep", "awake", word_list).size() == 8);
+
+    my_assert(generate_word_ladder("car", "cheat", word_list).size() == 4);
+
 }
